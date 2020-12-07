@@ -4,10 +4,10 @@ networks:
     driver: bridge
 
 services:
-  php:
-    container_name: php
+  ndock_tz_php:
+    container_name: ndock_tz_php
     build: ./buildconf/php
-    image: php-dealer:20201127
+    image: php:20201127
     volumes:
       - ./buildconf/php/php.ini-development:/usr/local/etc/php/php.ini
       - ./web:/var/www
@@ -22,9 +22,9 @@ services:
     networks:
       - network
 
-  nginx:
+  ndock_tz_nginx:
     image: nginx:1.19
-    container_name: nginx
+    container_name: ndock_tz_nginx
     ports:
       - 80:80
     volumes:
@@ -37,13 +37,13 @@ services:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      - php
+      - ndock_tz_php
     networks:
       - network
 
-  db:
-    image: mysql:8.0
-    container_name: db
+  ndock_tz_db:
+    image: mysql:5.7
+    container_name: ndock_tz_db
     logging:
       driver: "json-file"
       options:

@@ -29,7 +29,7 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 RUN composer self-update
 
-WORKDIR /var/www/trust-jv-dealer-system
+WORKDIR /var/www/tz-concierge-web-management-version
 
 # php-fpmはデフォルトのユーザwww-dataで動く。https://stackoverflow.com/questions/48619445/permission-denied-error-using-laravel-docker
 # 変更する場合は /usr/local/etc/php-fpm.d/www.conf でユーザー名を変える。
