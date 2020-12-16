@@ -9,7 +9,7 @@ services:
     build: ./images/php
     image: php:20201127
     volumes:
-      - ./images/php/php.ini-development:/usr/local/etc/php/php.ini
+      - ./images/php/php.ini.main:/usr/local/etc/php/php.ini
       - ../volumes/www/:/var/www
       - ../volumes/logs/php-fpm:/var/log/php-fpm
     environment:
