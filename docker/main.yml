@@ -6,7 +6,7 @@ networks:
 services:
   php:
     container_name: php
-    build: ./buildconf/php
+    build: ./docker/images/php
     image: php:20201127
     volumes:
       - ./docker/images/php/php.ini-development:/usr/local/etc/php/php.ini
