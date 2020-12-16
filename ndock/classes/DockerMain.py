@@ -21,11 +21,17 @@ class DockerMain:
     def stop(self):
         try:
             subprocess.check_call(
-                'docker-compose -f ndock/ndock.yml down', shell=True)
-            print(Color.green('ndock downed...'))
+                'docker-compose -f docker/main.yml down', shell=True)
+            print(Color.green('main downed...'))
 
         except Exception:
             print(Color.red('Fatal Error.'))
 
     def start(self):
-        pass
+        try:
+            subprocess.check_call(
+                'docker-compose -f docker/main.yml up -d', shell=True)
+            print(Color.green('main downed...'))
+
+        except Exception:
+            print(Color.red('Fatal Error.'))

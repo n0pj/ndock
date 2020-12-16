@@ -2,6 +2,7 @@ import yaml
 import json
 from .Color import Color
 from .DockerNDock import DockerNDock
+from .DockerMain import DockerMain
 
 
 class NDock:
@@ -111,8 +112,6 @@ class NDock:
         docker.call(self.command)
 
     def docker_main(self):
-        # print(Color.cyan('Phase: 1'))
-        # print(Color.green('Starting DockerMain...'))
-        # docker = DockerMain()
-        # docker.call(self.command)
+        docker = DockerMain()
+        docker.call(self.command)
         pass
