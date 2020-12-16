@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm
+FROM php:7.2.34-fpm
 
 RUN apt update
 RUN apt install -y wget git unzip
@@ -21,7 +21,7 @@ COPY docker.conf /usr/local/etc/php-fpm.d/
 # Install PHP Extensions
 RUN apt install -y zlib1g-dev default-mysql-client libonig-dev libzip-dev zip unzip libjpeg-dev libfreetype6-dev
 RUN apt install -y libmagick++-dev libmagickwand-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxpm-dev
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql mbstring
 
 # Install Composer
@@ -29,7 +29,7 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 RUN composer self-update
 
-WORKDIR /var/www/public
+WORKDIR /var/www/tz-concierge-web-management-version
 
 # php-fpmはデフォルトのユーザwww-dataで動く。https://stackoverflow.com/questions/48619445/permission-denied-error-using-laravel-docker
 # 変更する場合は /usr/local/etc/php-fpm.d/www.conf でユーザー名を変える。

@@ -1,0 +1,8 @@
+volumes/db/data
+volumes/db/logs/laravel
+volumes/db/logs/nginx
+volumes/db/logs/php-fpm
+volumes/db/www
+
+.mypy_cache
+__pycache__

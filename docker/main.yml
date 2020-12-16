@@ -4,8 +4,8 @@ networks:
     driver: bridge
 
 services:
-  php:
-    container_name: php
+  ndock_jokin_php:
+    container_name: ndock_php
     build: ./images/php
     image: php:20201127
     volumes:
@@ -21,10 +21,11 @@ services:
         max-file: "3"
     networks:
       - network
+    command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data; php-fpm'
 
-  nginx:
+  ndock_jokin_nginx:
     image: nginx:1.19
-    container_name: nginx
+    container_name: ndock_nginx
     ports:
       - 80:80
     volumes:
@@ -37,13 +38,13 @@ services:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      - php
+      - ndock_jokin_php
     networks:
       - network
 
-  db:
+  ndock_jokin_db:
     image: mysql:5.7
-    container_name: db
+    container_name: ndock_db
     logging:
       driver: "json-file"
       options:
