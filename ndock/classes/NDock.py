@@ -1,9 +1,13 @@
-import yaml
+# import yaml
+import ndock.library.yaml531 as yaml
 import json
 from .Color import Color
 from .DockerNDock import DockerNDock
 from .DockerMain import DockerMain
 import subprocess
+# from ndock.library.dotenv.main import load_dotenv
+import ndock.library.dotenv0150 as dotenv
+import os
 
 
 class NDock:
@@ -13,6 +17,7 @@ class NDock:
 
     env = None
     command = None
+    yaml_path = ''
 
     def __init__(self):
         print(Color.green('Starting ndock initialize...'))
@@ -21,11 +26,17 @@ class NDock:
         print(Color.green('Ended ndock...'))
 
     def load_yaml(self, path):
-        if not path:
-            return False
+        self.yaml_path = path
 
-        with open(path)as file:
+        with open(path) as file:
             yml = yaml.load(file, Loader=yaml.SafeLoader)
+            return yml
+
+    def save_yaml(self, yml):
+        path = self.yaml_path
+
+        with open(path, 'w') as file:
+            yml = yaml.dump(yml, file)
             return yml
 
     def load_json(self, path):
@@ -50,35 +61,61 @@ class NDock:
 
     def set_env(self, specify_env):
         envs = self.load_json(self.ENVS_JSON_PATH)
-        if specify_env is None:
-            specify_env = envs[0]
+
+        specify_env = self.parse_dotenv('env', specify_env)
+        is_confirm = False
 
         if specify_env in envs:
             self.env = specify_env
             print(Color.cyan(f'Set current env is {self.env}.'))
-            return self.env
 
         else:
-            self.env = envs[0]
-            print(Color.red(f'Undefined env {specify_env}.'))
+            self.env = specify_env
+            print(Color.red(f'Undefined env {self.env}.'))
             print(Color.cyan(f'Set current env is {self.env}.'))
-            return self.env
+
+        # no command
+        is_confirm = self.confirm_env()
+        if not is_confirm:
+            print(Color.red('Error, ndock exited.'))
+            exit()
+        return self.env
 
     def set_command(self, specify_command):
         commands = self.load_json(self.COMMANDS_JSON_PATH)
+
+        specify_command = self.parse_dotenv('command', specify_command)
+        is_confirm = False
+
         if specify_command is None:
             specify_command = commands[0]
 
         if specify_command in commands:
             self.command = specify_command
             print(Color.cyan(f'Set current command is {self.command}.'))
-            return self.command
 
         else:
-            self.command = commands[0]
-            print(Color.red(f'Undefined command {specify_command}.'))
+            self.command = specify_command
+            print(Color.red(f'Undefined command {self.command}.'))
             print(Color.cyan(f'Set current command is {self.command}.'))
-            return self.command
+
+        # no command
+        is_confirm = self.confirm_command()
+        if not is_confirm:
+            print(Color.red('Error, ndock exited.'))
+            exit()
+        return self.command
+
+    def confirm_env(self):
+        env = self.env
+        allow_envs = self.load_json(self.ENVS_JSON_PATH)
+        if env in allow_envs:
+            print('Confirm env ... ' + Color.green('done'))
+            return True
+        else:
+            print('Confirm env ... ' + Color.red('fail'))
+            print(Color.red(f'Undefined env {env}.'))
+            return False
 
     def confirm_command(self):
         env = self.env
@@ -96,19 +133,14 @@ class NDock:
             print(Color.red(f'Can use commands: {allow_commands}'))
             return False
 
-    def run(self):
-        is_confirm = self.confirm_command()
-
-        if not is_confirm:
-            print(Color.red('Error, ndock exited.'))
-            exit()
-
-        env = self.env
+    def run(self, env, command):
         # command = self.command
+        self.set_env(env)
+        self.set_command(command)
+        env = self.env
         eval(f'self.docker_{env}()')
 
     def docker_ndock(self):
-
         docker = DockerNDock()
         docker.call(self.command)
 
@@ -117,10 +149,39 @@ class NDock:
         docker.call(self.command)
         pass
 
-    def generate_env(self):
+    def generate_dotenv(self):
         with open('.env', 'w') as env:
             # uid = subprocess.run('id -u', stdout=env, shell=True)
             uid_bytes = subprocess.check_output('id -u', shell=True)
             uid_str = uid_bytes.decode()
             uid_str = f'UID={uid_str}'
             env.write(uid_str)
+
+    def parse_dotenv(self, arg, val):
+        dotenv = self.load_dotenv('.env')
+        if arg == 'env':
+            specify_env = val
+            envs = self.load_json(self.ENVS_JSON_PATH)
+            if specify_env is None:
+                if dotenv.get('DEFAULT_ENV'):
+                    return dotenv.get('DEFAULT_ENV')
+                return envs[0]
+            else:
+                return specify_env
+
+        if arg == 'command':
+            specify_command = val
+            commands = self.load_json(self.COMMANDS_JSON_PATH)
+            if specify_command is None:
+                if dotenv.get('DEFAULT_COMMAND'):
+                    return dotenv.get('DEFAULT_COMMAND')
+                return commands[0]
+            else:
+                return specify_command
+
+    def load_dotenv(self, path):
+        dotenv.load_dotenv(verbose=True)
+        dotenv.load_dotenv(path)
+        return os.environ
+        # UID = os.environ.get('UID')
+        # print('current: ' + UID)

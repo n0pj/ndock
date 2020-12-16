@@ -1,10 +1,8 @@
-version: "3"
 services:
   python:
-    restart: always
     build: .
-    container_name: "ndock_main_python"
-    working_dir: "/root/"
+    container_name: ndock_main_python
+    restart: always
     tty: true
-    # volumes:
-    #   - ./opt:/root/opt
+    working_dir: /root/
+version: '3'

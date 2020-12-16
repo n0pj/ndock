@@ -1,67 +1,66 @@
-version: "3"
 networks:
   network:
     driver: bridge
-
 services:
-  ndock_jokin_php:
-    container_name: ndock_php
-    build: ./images/php
-    image: php:20201127
-    volumes:
-      - ./images/php/php.ini.main:/usr/local/etc/php/php.ini
-      - ../volumes/www/:/var/www
-      - ../volumes/logs/php-fpm:/var/log/php-fpm
+  db:
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: ndock_db
     environment:
+      MYSQL_DATABASE: database
+      MYSQL_PASSWORD: docker
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: docker
       TZ: Asia/Tokyo
+    image: mysql:5.7
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "10m"
         max-file: "3"
+        max-size: 10m
     networks:
       - network
-    command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data; php-fpm'
-
-  ndock_jokin_nginx:
-    image: nginx:1.19
+    ports:
+      - 3306:3306
+    volumes:
+      - ../volumes/db/data:/var/lib/mysql
+      - ../volumes/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ../volumes/db/sql:/docker-entrypoint-initdb.d
+  nginx:
     container_name: ndock_nginx
+    depends_on:
+      - php
+    image: nginx:1.19
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: 10m
+    networks:
+      - network
     ports:
       - 80:80
     volumes:
       - ../volumes/www:/var/www
       - ../volumes/logs/nginx:/var/log/nginx
       - ./images/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    depends_on:
-      - ndock_jokin_php
-    networks:
-      - network
-
-  ndock_jokin_db:
-    image: mysql:5.7
-    container_name: ndock_db
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+  php:
+    build: ./images/php
+    command:
+      bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;
+      php-fpm'
+    container_name: ndock_php
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: database
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
-      TZ: "Asia/Tokyo"
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ../volumes/db/data:/var/lib/mysql
-      - ../volumes/db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ../volumes/db/sql:/docker-entrypoint-initdb.d
-    ports:
-      - 3306:3306
+      TZ: Asia/Tokyo
+    image: php:20201127
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: 10m
     networks:
       - network
+    volumes:
+      - ./images/php/php.ini.main:/usr/local/etc/php/php.ini
+      - ../volumes/www/:/var/www
+      - ../volumes/logs/php-fpm:/var/log/php-fpm
+version: "3"

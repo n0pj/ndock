@@ -19,10 +19,13 @@ def main():
 
     env = args.env
     command = args.command
-
-    env = ndock.set_env(env)
-    command = ndock.set_command(command)
-    ndock.run()
+    ndock.run(env, command)
+    yaml = ndock.load_yaml('ndock/ndock.yml')
+    yaml = ndock.load_yaml('docker/main.yml')
+    # print(yaml)
+    # yaml['services']['python']['tty'] = True
+    # print(yaml)
+    # yaml = ndock.save_yaml(yaml)
 
 
 if(__name__ == '__main__'):
