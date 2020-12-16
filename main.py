@@ -1,10 +1,28 @@
-from ndock.NDock import NDock
+from ndock.classes.NDock import NDock
+import argparse
 
 
 def main():
-    print('test')
-    test = NDock('test')
-    test
+    ndock = NDock()
+    # print('test')
+    # print(ndock.load_yaml('./ndock.yml'))
+    # yaml = ndock.load_yaml('./ndock.yml')
+    # print(yaml['version'])
+    # print(ndock.to_json(yaml))
+    # json = ndock.to_json(yaml)
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-e', '--env')
+    parser.add_argument('-c', '--command')
+
+    args = parser.parse_args(args=None, namespace=None)
+
+    env = args.env
+    command = args.command
+
+    env = ndock.set_env(env)
+    command = ndock.set_command(command)
+    ndock.run()
 
 
 if(__name__ == '__main__'):

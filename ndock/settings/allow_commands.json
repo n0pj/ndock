@@ -1,0 +1,14 @@
+{
+  "main": {
+    "allow_commands": ["start", "stop"]
+  },
+  "staging": {
+    "allow_commands": ["start", "stop"]
+  },
+  "master": {
+    "allow_commands": ["start", "stop"]
+  },
+  "ndock": {
+    "allow_commands": ["setup", "stop"]
+  }
+}
