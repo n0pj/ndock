@@ -31,13 +31,6 @@ class DockerMain:
     def start(self):
 
         try:
-            with open('.env', 'w') as env:
-                # uid = subprocess.run('id -u', stdout=env, shell=True)
-                uid_bytes = subprocess.check_output('id -u', shell=True)
-                uid_str = uid_bytes.decode()
-                uid_str = f'UID={uid_str}'
-                env.write(uid_str)
-
             print(Color.green('Start main...'))
             subprocess.check_call(
                 'docker-compose -f docker/main.yml up -d', shell=True)

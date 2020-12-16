@@ -3,6 +3,7 @@ import json
 from .Color import Color
 from .DockerNDock import DockerNDock
 from .DockerMain import DockerMain
+import subprocess
 
 
 class NDock:
@@ -115,3 +116,11 @@ class NDock:
         docker = DockerMain()
         docker.call(self.command)
         pass
+
+    def generate_env(self):
+        with open('.env', 'w') as env:
+            # uid = subprocess.run('id -u', stdout=env, shell=True)
+            uid_bytes = subprocess.check_output('id -u', shell=True)
+            uid_str = uid_bytes.decode()
+            uid_str = f'UID={uid_str}'
+            env.write(uid_str)
