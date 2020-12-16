@@ -11,11 +11,11 @@ class DockerNDock:
         eval(f'self.{command}()')
 
     def setup(self):
-        print(Color.green('Starting DockerNDock setup...'))
+        print(Color.green('Starting DockerNDock setup ...'))
         try:
             subprocess.check_call(
                 'docker-compose -f ndock/ndock.yml up -d', shell=True)
-            print('ndock setup ...' + Color.green('done'))
+            print('Setup ndock ... ' + Color.green('done'))
         except Exception:
             print(Color.red('Fatal Error.'))
 
@@ -23,7 +23,7 @@ class DockerNDock:
         try:
             subprocess.check_call(
                 'docker-compose -f ndock/ndock.yml down', shell=True)
-            print(Color.green('ndock downed...'))
+            print(Color.green('Downed ndock ... '))
 
         except Exception:
             print(Color.red('Fatal Error.'))
