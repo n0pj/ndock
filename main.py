@@ -14,14 +14,19 @@ def main():
 
     parser.add_argument('-e', '--env')
     parser.add_argument('-c', '--command')
+    parser.add_argument('-u', '--url')
+    parser.add_argument('-b', '--branch')
 
     args = parser.parse_args(args=None, namespace=None)
 
     env = args.env
     command = args.command
-    ndock.run(env, command)
+    url = args.url
+    branch = args.branch
+    ndock.run(env, command, url=url, branch=branch)
     yaml = ndock.load_yaml('ndock/ndock.yml')
     yaml = ndock.load_yaml('docker/main.yml')
+
     # print(yaml)
     # yaml['services']['python']['tty'] = True
     # print(yaml)

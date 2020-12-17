@@ -1,1 +1,12 @@
-["start", "stop", "setup"]
+[
+  "start",
+  "stop",
+  "down",
+  "setup",
+  "purge",
+  "stop",
+  "rm_all",
+  "rmi_all",
+  "rmi_force_all",
+  "clone"
+]

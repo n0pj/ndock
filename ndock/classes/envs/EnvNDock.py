@@ -1,9 +1,9 @@
 import subprocess
 
-from .Color import Color
+from ndock.classes.Color import Color
 
 
-class DockerNDock:
+class EnvNDock:
     def __init__(self):
         pass
 

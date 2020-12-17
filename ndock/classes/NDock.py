@@ -2,8 +2,9 @@
 import ndock.library.yaml531 as yaml
 import json
 from .Color import Color
-from .DockerNDock import DockerNDock
-from .DockerMain import DockerMain
+from .envs.EnvNDock import EnvNDock
+from .envs.EnvAny import EnvAny
+from .envs.EnvMain import EnvMain
 import subprocess
 # from ndock.library.dotenv.main import load_dotenv
 import ndock.library.dotenv0150 as dotenv
@@ -14,41 +15,39 @@ class NDock:
     ENVS_JSON_PATH = 'ndock/settings/envs.json'
     COMMANDS_JSON_PATH = 'ndock/settings/commands.json'
     ALLOW_COMMANDS_JSON_PATH = 'ndock/settings/allow_commands.json'
+    NDOCK_DOTENV_PATH = '.env'
 
     env = None
     command = None
     yaml_path = ''
 
-    def __init__(self):
+    def __init__(self) -> None:
         print(Color.green('Starting ndock initialize...'))
 
-    def __del__(self):
+    def __del__(self) -> None:
         print(Color.green('Ended ndock...'))
 
-    def load_yaml(self, path):
+    def load_yaml(self, path) -> dict:
         self.yaml_path = path
 
         with open(path) as file:
             yml = yaml.load(file, Loader=yaml.SafeLoader)
             return yml
 
-    def save_yaml(self, yml):
+    def save_yaml(self, yml) -> bool:
         path = self.yaml_path
 
         with open(path, 'w') as file:
             yml = yaml.dump(yml, file)
             return yml
 
-    def load_json(self, path):
+    def load_json(self, path) -> dict:
         with open(path) as f:
             json_dict = json.load(f)
 
         return json_dict
 
-    def to_json(self, yml):
-        if not yml:
-            return False
-
+    def to_json(self, yml) -> str:
         json_obj = json.dumps(yml, indent=2)
         return json_obj
 
@@ -133,32 +132,34 @@ class NDock:
             print(Color.red(f'Can use commands: {allow_commands}'))
             return False
 
-    def run(self, env, command):
+    def run(self, env, command, **kwargs):
         # command = self.command
+        url = kwargs.get('url')
         self.set_env(env)
         self.set_command(command)
         env = self.env
-        eval(f'self.docker_{env}()')
+        self.generate_dotenv()
+        eval(f'self.docker_{env}(**{kwargs})')
 
-    def docker_ndock(self):
-        docker = DockerNDock()
+    def docker_ndock(self, **kwargs):
+        docker = EnvNDock()
         docker.call(self.command)
 
-    def docker_main(self):
-        docker = DockerMain()
+    def docker_any(self, **kwargs):
+        docker = EnvAny()
         docker.call(self.command)
-        pass
+
+    def docker_main(self, **kwargs):
+        docker = EnvMain()
+        docker.call(self.command, **kwargs)
 
     def generate_dotenv(self):
-        with open('.env', 'w') as env:
-            # uid = subprocess.run('id -u', stdout=env, shell=True)
-            uid_bytes = subprocess.check_output('id -u', shell=True)
-            uid_str = uid_bytes.decode()
-            uid_str = f'UID={uid_str}'
-            env.write(uid_str)
+        uid_bytes = subprocess.check_output('id -u', shell=True)
+        uid_str = uid_bytes.decode()
+        self.set_dotenv(self.NDOCK_DOTENV_PATH, 'UID', uid_str)
 
     def parse_dotenv(self, arg, val):
-        dotenv = self.load_dotenv('.env')
+        dotenv = self.load_dotenv(self.NDOCK_DOTENV_PATH)
         if arg == 'env':
             specify_env = val
             envs = self.load_json(self.ENVS_JSON_PATH)
@@ -179,9 +180,17 @@ class NDock:
             else:
                 return specify_command
 
-    def load_dotenv(self, path):
+    def load_dotenv(self, path=''):
         dotenv.load_dotenv(verbose=True)
         dotenv.load_dotenv(path)
         return os.environ
+        # UID = os.environ.get('UID')
+        # print('current: ' + UID)
+
+    def set_dotenv(self, path, key, value):
+        value_str = str(value)
+        value_str = value.replace('\n', '')
+
+        dotenv.set_key(path, key_to_set=key, value_to_set=value_str)
         # UID = os.environ.get('UID')
         # print('current: ' + UID)
