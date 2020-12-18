@@ -3,7 +3,7 @@ import argparse
 
 
 def main():
-    ndock = NDock()
+    ndock: object = NDock()
     # print('test')
     # print(ndock.load_yaml('./ndock.yml'))
     # yaml = ndock.load_yaml('./ndock.yml')
@@ -23,10 +23,12 @@ def main():
     command = args.command
     url = args.url
     branch = args.branch
-    ndock.run(env, command, url=url, branch=branch)
+    # ndock.run(env, command, url=url, branch=branch)
     yaml = ndock.load_yaml('ndock/ndock.yml')
     yaml = ndock.load_yaml('docker/main.yml')
 
+    string: str = 'test'
+    print(string)
     # print(yaml)
     # yaml['services']['python']['tty'] = True
     # print(yaml)

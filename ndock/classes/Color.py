@@ -23,21 +23,21 @@ class Color:
     BG_DEFAULT = '\033[49m'  # 背景色をデフォルトに戻す
     RESET = '\033[0m'  # 全てリセット
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     @classmethod
-    def green(cls, string):
+    def green(cls, string) -> str:
         return f'{cls.GREEN}{string}{cls.RESET}'
 
     @classmethod
-    def magenta(cls, string):
+    def magenta(cls, string) -> str:
         return f'{cls.MAGENTA}{string}{cls.RESET}'
 
     @classmethod
-    def cyan(cls, string):
+    def cyan(cls, string) -> str:
         return f'{cls.CYAN}{string}{cls.RESET}'
 
     @classmethod
-    def red(cls, string):
+    def red(cls, string) -> str:
         return f'{cls.RED}{string}{cls.RESET}'
