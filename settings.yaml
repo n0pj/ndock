@@ -3,7 +3,7 @@
 docker_settings:
   nginx:
     use: true
-    parse_conf: false
+    parse_conf: true
   mysql:
     use: true
   php-apache:
@@ -11,4 +11,4 @@ docker_settings:
   php-fpm:
     use: true
   phpmyadmin:
-    use: true
+    use: false

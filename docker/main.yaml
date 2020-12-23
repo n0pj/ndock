@@ -50,7 +50,7 @@ services:
     container_name: ndock_php
     environment:
       TZ: Asia/Tokyo
-    image: php:20201127
+    image: php:20201203
     logging:
       driver: json-file
       options:
@@ -59,20 +59,7 @@ services:
     networks:
     - network
     volumes:
-    - ./images/php/php.ini.main:/usr/local/etc/php/php.ini
-    - ../volumes/www/:/var/www
+    - ./images/php-fpm/php.ini.main:/usr/local/etc/php/php.ini
+    - ../volumes/www:/var/www
     - ../volumes/logs/php-fpm:/var/log/php-fpm
-  phpmyadmin:
-    environment:
-    - PMA_ARBITRARY=1
-    - PMA_HOST=mysql
-    - PMA_USER=docker
-    - PMA_PASSWORD=docker
-    image: phpmyadmin/phpmyadmin
-    networks:
-    - network
-    ports:
-    - 8080:80
-    volumes:
-    - /sessions
 version: '3'

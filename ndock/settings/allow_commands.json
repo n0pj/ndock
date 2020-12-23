@@ -12,6 +12,6 @@
     "allow_commands": ["setup", "stop"]
   },
   "any": {
-    "allow_commands": ["purge", "stop", "rm_all", "rmi_all"]
+    "allow_commands": ["purge", "stop", "rm_all", "rmi_all", "rmi_force_all"]
   }
 }

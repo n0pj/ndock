@@ -174,7 +174,7 @@ class EnvMain:
         try:
             print(Color.green('Start main...'))
             subprocess.check_call(
-                'docker-compose -f docker/main.yaml up -d', shell=True)
+                'docker-compose -f docker/main.yaml up -d --remove-orphans', shell=True)
             print('Start main ... ' + Color.green('done'))
 
         except Exception:

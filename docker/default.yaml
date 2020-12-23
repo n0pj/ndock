@@ -44,12 +44,12 @@ services:
       - ../volumes/logs/nginx:/var/log/nginx
       - ./images/nginx/main.conf:/etc/nginx/conf.d/default.conf
   php-fpm:
+    container_name: ndock_php
+    image: php:20201203
     build: ./images/php-fpm
     command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data; php-fpm'
-    container_name: ndock_php
     environment:
       TZ: Asia/Tokyo
-    image: php:20201127
     logging:
       driver: json-file
       options:
@@ -59,14 +59,14 @@ services:
       - network
     volumes:
       - ./images/php-fpm/php.ini.main:/usr/local/etc/php/php.ini
-      - ../volumes/www/:/var/www
+      - ../volumes/www:/var/www
       - ../volumes/logs/php-fpm:/var/log/php-fpm
   php-apache:
+    container_name: ndock_php
     build: ./images/php-apache
     command:
       bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;
       php-fpm'
-    container_name: ndock_php
     environment:
       TZ: Asia/Tokyo
     image: php:20201127
