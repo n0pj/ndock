@@ -1,10 +1,9 @@
-# import yaml
-import ndock.library.yaml531 as yaml
-import json
 from .Color import Color
 from .envs.EnvNDock import EnvNDock
 from .envs.EnvAny import EnvAny
 from .envs.EnvMain import EnvMain
+from .Loader import Loader
+from typing import Union
 import subprocess
 # from ndock.library.dotenv.main import load_dotenv
 import ndock.library.dotenv0150 as dotenv
@@ -12,14 +11,14 @@ import os
 
 
 class NDock:
-    ENVS_JSON_PATH = 'ndock/settings/envs.json'
-    COMMANDS_JSON_PATH = 'ndock/settings/commands.json'
-    ALLOW_COMMANDS_JSON_PATH = 'ndock/settings/allow_commands.json'
-    NDOCK_DOTENV_PATH = '.env'
+    ENVS_JSON_PATH: str = 'ndock/settings/envs.json'
+    COMMANDS_JSON_PATH: str = 'ndock/settings/commands.json'
+    ALLOW_COMMANDS_JSON_PATH: str = 'ndock/settings/allow_commands.json'
+    NDOCK_DOTENV_PATH: str = '.env'
 
-    env = None
-    command = None
-    yaml_path = ''
+    env: Union[str, None] = None
+    command: Union[str, None] = None
+    yaml_path: str = ''
 
     def __init__(self) -> None:
         print(Color.green('Starting ndock initialize...'))
@@ -27,39 +26,8 @@ class NDock:
     def __del__(self) -> None:
         print(Color.green('Ended ndock...'))
 
-    def load_yaml(self, path) -> dict:
-        self.yaml_path = path
-
-        with open(path) as file:
-            yml = yaml.load(file, Loader=yaml.SafeLoader)
-            return yml
-
-    def save_yaml(self, yml) -> bool:
-        path = self.yaml_path
-
-        with open(path, 'w') as file:
-            yml = yaml.dump(yml, file)
-            return yml
-
-    def load_json(self, path) -> dict:
-        with open(path) as f:
-            json_dict = json.load(f)
-
-        return json_dict
-
-    def to_json(self, yml) -> str:
-        json_obj = json.dumps(yml, indent=2)
-        return json_obj
-
-    def to_yaml(self, yml):
-        if not yml:
-            return False
-
-        json_obj = json.dumps(yml, indent=2)
-        return json_obj
-
     def set_env(self, specify_env):
-        envs = self.load_json(self.ENVS_JSON_PATH)
+        envs = Loader.load_json(self.ENVS_JSON_PATH)
 
         specify_env = self.parse_dotenv('env', specify_env)
         is_confirm = False
@@ -81,7 +49,7 @@ class NDock:
         return self.env
 
     def set_command(self, specify_command):
-        commands = self.load_json(self.COMMANDS_JSON_PATH)
+        commands = Loader.load_json(self.COMMANDS_JSON_PATH)
 
         specify_command = self.parse_dotenv('command', specify_command)
         is_confirm = False
@@ -107,7 +75,7 @@ class NDock:
 
     def confirm_env(self):
         env = self.env
-        allow_envs = self.load_json(self.ENVS_JSON_PATH)
+        allow_envs = Loader.load_json(self.ENVS_JSON_PATH)
         if env in allow_envs:
             print('Confirm env ... ' + Color.green('done'))
             return True
@@ -119,7 +87,7 @@ class NDock:
     def confirm_command(self):
         env = self.env
         command = self.command
-        allow_command_envs = self.load_json(self.ALLOW_COMMANDS_JSON_PATH)
+        allow_command_envs = Loader.load_json(self.ALLOW_COMMANDS_JSON_PATH)
         allow_commands_env = allow_command_envs[env]
         allow_commands = allow_commands_env['allow_commands']
         if command in allow_commands:
@@ -133,8 +101,6 @@ class NDock:
             return False
 
     def run(self, env, command, **kwargs):
-        # command = self.command
-        url = kwargs.get('url')
         self.set_env(env)
         self.set_command(command)
         env = self.env
@@ -162,7 +128,7 @@ class NDock:
         dotenv = self.load_dotenv(self.NDOCK_DOTENV_PATH)
         if arg == 'env':
             specify_env = val
-            envs = self.load_json(self.ENVS_JSON_PATH)
+            envs = Loader.load_json(self.ENVS_JSON_PATH)
             if specify_env is None:
                 if dotenv.get('DEFAULT_ENV'):
                     return dotenv.get('DEFAULT_ENV')
@@ -172,7 +138,7 @@ class NDock:
 
         if arg == 'command':
             specify_command = val
-            commands = self.load_json(self.COMMANDS_JSON_PATH)
+            commands = Loader.load_json(self.COMMANDS_JSON_PATH)
             if specify_command is None:
                 if dotenv.get('DEFAULT_COMMAND'):
                     return dotenv.get('DEFAULT_COMMAND')

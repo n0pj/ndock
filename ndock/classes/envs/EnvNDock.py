@@ -14,7 +14,7 @@ class EnvNDock:
         print(Color.green('Starting DockerNDock setup ...'))
         try:
             subprocess.check_call(
-                'docker-compose -f ndock/ndock.yml up -d', shell=True)
+                'docker-compose -f ndock/ndock.yaml up -d', shell=True)
             print('Setup ndock ... ' + Color.green('done'))
         except Exception:
             print(Color.red('Fatal Error.'))
@@ -22,7 +22,7 @@ class EnvNDock:
     def stop(self):
         try:
             subprocess.check_call(
-                'docker-compose -f ndock/ndock.yml down', shell=True)
+                'docker-compose -f ndock/ndock.yaml down', shell=True)
             print(Color.green('Downed ndock ... '))
 
         except Exception:

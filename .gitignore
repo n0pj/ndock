@@ -1,8 +1,8 @@
-volumes/db/data
-volumes/db/logs/laravel
-volumes/db/logs/nginx
-volumes/db/logs/php-fpm
-volumes/db/www
+volumes/mysql/pool
+volumes/logs/laravel
+volumes/logs/nginx
+volumes/logs/php-fpm
+volumes/www
 
 .mypy_cache
 __pycache__

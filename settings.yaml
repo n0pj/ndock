@@ -1,0 +1,14 @@
+# docker-compose.yaml の設定
+
+docker_settings:
+  nginx:
+    use: true
+    parse_conf: false
+  mysql:
+    use: true
+  php-apache:
+    use: false
+  php-fpm:
+    use: true
+  phpmyadmin:
+    use: true
