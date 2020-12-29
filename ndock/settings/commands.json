@@ -8,5 +8,7 @@
   "rm_all",
   "rmi_all",
   "rmi_force_all",
-  "clone"
+  "clone",
+  "build",
+  "rm_db"
 ]

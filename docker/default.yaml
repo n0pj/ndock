@@ -11,7 +11,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: docker
       TZ: Asia/Tokyo
-    image: mysql:5.7
+    image: mysql:8
+    # entrypoint: /entrypoint.sh
     logging:
       driver: json-file
       options:
@@ -23,12 +24,14 @@ services:
       - 3306:3306
     volumes:
       - ../volumes/mysql/pool:/var/lib/mysql
-      - ../volumes/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ../volumes/mysql/conf.d:/etc/mysql/conf.d
+      # - ../volumes/mysql/conf.d:/etc/mysql/conf.d
       - ../volumes/mysql/sql:/docker-entrypoint-initdb.d
+      # - ./images/mysql/entrypoint.sh:/entrypoint.sh
   nginx:
     container_name: ndock_nginx
-    depends_on:
-      - php-fpm
+    # depends_on:
+    #   - php-fpm
     image: nginx:1.19
     logging:
       driver: json-file
@@ -47,17 +50,31 @@ services:
     container_name: ndock_express
     image: node:14.15.1
     build: ./images/express
-    logging:
-      driver: json-file
-      options:
-        max-file: "3"
-        max-size: 10m
+    working_dir: /home/node/express
+    # - sh -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;'
+    command:
+      [sh, -c, yarn install && yarn build && yarn next:build && yarn next:start]
+    # entrypoint: /entrypoint.sh
     networks:
       - network
     ports:
       - 3000:3000
     volumes:
-      - ../volumes/www/express:/var/www/express
+      - ../volumes/www/express:/home/node/express:rw
+      # - ./images/express/entrypoint.sh:/entrypoint.sh
+  python:
+    container_name: ndock_python
+    image: python:3
+    build: ./images/python
+    entrypoint: /entrypoint.sh
+    networks:
+      - network
+    ports:
+      - 8000:8000
+    working_dir: /code
+    volumes:
+      - ../volumes/home/django:/code:rw
+      - ./images/python/entrypoint.sh:/entrypoint.sh
   php-fpm:
     container_name: ndock_php-fpm
     image: php:20201203

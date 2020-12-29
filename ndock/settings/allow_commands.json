@@ -1,6 +1,6 @@
 {
   "main": {
-    "allow_commands": ["start", "stop", "down", "clone"]
+    "allow_commands": ["build", "start", "stop", "down", "clone", "rm_db"]
   },
   "staging": {
     "allow_commands": ["start", "stop"]

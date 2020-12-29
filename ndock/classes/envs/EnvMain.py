@@ -180,6 +180,40 @@ class EnvMain:
         except Exception:
             print(Color.red('Fatal Error.'))
 
+    def build(self, **kwargs):
+        settings_yaml = Loader.load_yaml()
+        nginx_settings = settings_yaml['docker_settings']['nginx']
+
+        if nginx_settings['parse_conf'] is True:
+            self.analyze_with_generate_nginx_conf()
+        else:
+            self.copy_nginx_conf()
+        try:
+            print(Color.green('Build main...'))
+            subprocess.check_call(
+                'docker-compose -f docker/main.yaml build', shell=True)
+            print('Build main ... ' + Color.green('done'))
+
+        except Exception:
+            print(Color.red('Fatal Error.'))
+
+    def rm_db(self, **kwargs):
+        settings_yaml = Loader.load_yaml()
+        nginx_settings = settings_yaml['docker_settings']['nginx']
+
+        if nginx_settings['parse_conf'] is True:
+            self.analyze_with_generate_nginx_conf()
+        else:
+            self.copy_nginx_conf()
+        try:
+            print(Color.green('Remove main database ...'))
+            subprocess.check_call(
+                'sudo rm -rf volumes/mysql/pool/*', shell=True)
+            print('Remove main database ... ' + Color.green('done'))
+
+        except Exception:
+            print(Color.red('Fatal Error.'))
+
     def clone(self, **kwargs):
         url = kwargs.get('url')
         branch = kwargs.get('branch')

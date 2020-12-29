@@ -2,6 +2,21 @@ networks:
   network:
     driver: bridge
 services:
+  express:
+    build: ./images/express
+    command:
+    - sh
+    - -c
+    - yarn install && yarn build && yarn next:build && yarn next:start
+    container_name: ndock_express
+    image: node:14.15.1
+    networks:
+    - network
+    ports:
+    - 3000:3000
+    volumes:
+    - ../volumes/www/express:/home/node/express:rw
+    working_dir: /home/node/express
   mysql:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     container_name: ndock_mysql
@@ -11,7 +26,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: docker
       TZ: Asia/Tokyo
-    image: mysql:5.7
+    image: mysql:8
     logging:
       driver: json-file
       options:
@@ -23,12 +38,10 @@ services:
     - 3306:3306
     volumes:
     - ../volumes/mysql/pool:/var/lib/mysql
-    - ../volumes/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    - ../volumes/mysql/conf.d:/etc/mysql/conf.d
     - ../volumes/mysql/sql:/docker-entrypoint-initdb.d
   nginx:
     container_name: ndock_nginx
-    depends_on:
-    - php-fpm
     image: nginx:1.19
     logging:
       driver: json-file
@@ -43,23 +56,31 @@ services:
     - ../volumes/www:/var/www
     - ../volumes/logs/nginx:/var/log/nginx
     - ./images/nginx/main.conf:/etc/nginx/conf.d/default.conf
-  php-fpm:
-    build: ./images/php-fpm
-    command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;
-      php-fpm'
-    container_name: ndock_php
+  phpmyadmin:
+    container_name: ndock_phpmyadmin
     environment:
-      TZ: Asia/Tokyo
-    image: php:20201203
-    logging:
-      driver: json-file
-      options:
-        max-file: '3'
-        max-size: 10m
+    - PMA_ARBITRARY=1
+    - PMA_HOST=mysql
+    - PMA_USER=docker
+    - PMA_PASSWORD=docker
+    image: phpmyadmin/phpmyadmin
     networks:
     - network
+    ports:
+    - 8080:80
     volumes:
-    - ./images/php-fpm/php.ini.main:/usr/local/etc/php/php.ini
-    - ../volumes/www:/var/www
-    - ../volumes/logs/php-fpm:/var/log/php-fpm
+    - /sessions
+  python:
+    build: ./images/python
+    container_name: ndock_python
+    entrypoint: /entrypoint.sh
+    image: python:3
+    networks:
+    - network
+    ports:
+    - 8000:8000
+    volumes:
+    - ../volumes/home/django:/code:rw
+    - ./images/python/entrypoint.sh:/entrypoint.sh
+    working_dir: /code
 version: '3'
