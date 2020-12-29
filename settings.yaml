@@ -4,11 +4,13 @@ docker_settings:
   nginx:
     use: true
     parse_conf: true
-  mysql:
+  express:
     use: true
+  mysql:
+    use: false
   php-apache:
     use: false
   php-fpm:
-    use: true
+    use: false
   phpmyadmin:
     use: false
