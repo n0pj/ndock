@@ -1,0 +1,17 @@
+{
+  "main": {
+    "allow_commands": ["start", "stop", "down", "clone"]
+  },
+  "staging": {
+    "allow_commands": ["start", "stop"]
+  },
+  "master": {
+    "allow_commands": ["start", "stop"]
+  },
+  "ndock": {
+    "allow_commands": ["setup", "stop"]
+  },
+  "any": {
+    "allow_commands": ["purge", "stop", "rm_all", "rmi_all", "rmi_force_all"]
+  }
+}

@@ -1,0 +1,8 @@
+services:
+  python:
+    build: .
+    container_name: ndock_main_python
+    restart: always
+    tty: true
+    working_dir: /root/
+version: '3'

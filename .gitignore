@@ -1,0 +1,8 @@
+volumes/mysql/pool
+volumes/logs/laravel
+volumes/logs/nginx
+volumes/logs/php-fpm
+volumes/www/*
+
+.mypy_cache
+__pycache__
