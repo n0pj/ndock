@@ -21,7 +21,8 @@ services:
     networks:
       - network
     ports:
-      - 3306:3306
+      # - 3306:3306
+      - 13306:3306
     volumes:
       - ../volumes/mysql/pool:/var/lib/mysql
       - ../volumes/mysql/conf.d:/etc/mysql/conf.d
@@ -75,6 +76,24 @@ services:
     volumes:
       - ../volumes/home/django:/code:rw
       - ./images/python/entrypoint.sh:/entrypoint.sh
+  rust:
+    container_name: ndock_rust
+    # image: rust:1.49
+    build:
+      context: ./images/rust
+      args:
+        - UID=$UID
+    entrypoint: /entrypoint.sh
+    networks:
+      - network
+    ports:
+      - 8888:8888
+    # working_dir: /code
+    # command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;'
+    # command: bash -c 'useradd -m -u ${UID} docker'
+    volumes:
+      - ../volumes/home/rust:/code:rw
+      - ./images/rust/entrypoint.sh:/entrypoint.sh
   php-fpm:
     container_name: ndock_php-fpm
     image: php:20201203

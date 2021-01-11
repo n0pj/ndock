@@ -2,21 +2,6 @@ networks:
   network:
     driver: bridge
 services:
-  express:
-    build: ./images/express
-    command:
-    - sh
-    - -c
-    - yarn install && yarn build && yarn next:build && yarn next:start
-    container_name: ndock_express
-    image: node:14.15.1
-    networks:
-    - network
-    ports:
-    - 3000:3000
-    volumes:
-    - ../volumes/www/express:/home/node/express:rw
-    working_dir: /home/node/express
   mysql:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     container_name: ndock_mysql
@@ -35,7 +20,7 @@ services:
     networks:
     - network
     ports:
-    - 3306:3306
+    - 13306:3306
     volumes:
     - ../volumes/mysql/pool:/var/lib/mysql
     - ../volumes/mysql/conf.d:/etc/mysql/conf.d
@@ -70,17 +55,18 @@ services:
     - 8080:80
     volumes:
     - /sessions
-  python:
-    build: ./images/python
-    container_name: ndock_python
+  rust:
+    build:
+      args:
+      - UID=$UID
+      context: ./images/rust
+    container_name: ndock_rust
     entrypoint: /entrypoint.sh
-    image: python:3
     networks:
     - network
     ports:
-    - 8000:8000
+    - 8888:8888
     volumes:
-    - ../volumes/home/django:/code:rw
-    - ./images/python/entrypoint.sh:/entrypoint.sh
-    working_dir: /code
+    - ../volumes/home/rust:/code:rw
+    - ./images/rust/entrypoint.sh:/entrypoint.sh
 version: '3'

@@ -5,8 +5,10 @@ docker_settings:
     use: true
     parse_conf: false
   express:
-    use: true
+    use: false
   python:
+    use: false
+  rust:
     use: true
   mysql:
     use: true
