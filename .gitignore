@@ -6,6 +6,7 @@ volumes/home/*
 volumes/mysql/pool/*
 volumes/www/*
 docker/main.yaml
+target/
 
 .mypy_cache
 __pycache__
