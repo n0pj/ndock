@@ -1,0 +1,6 @@
+t1:
+  momo:
+    use: true
+    parse_conf: false
+  tet:
+    use: false

@@ -1,5 +1,4 @@
-# docker-compose.yaml の設定
-
+---
 docker_settings:
   nginx:
     use: true
@@ -17,4 +16,9 @@ docker_settings:
     use: false
   phpmyadmin:
     use: false
-  import: t2.yaml
+  t2:
+    nginx:
+      use: true
+      parse_conf: false
+    express:
+      use: false
