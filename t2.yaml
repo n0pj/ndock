@@ -1,6 +1,0 @@
-t2:
-  nginx:
-    use: true
-    parse_conf: false
-  express:
-    use: false

@@ -1,0 +1,20 @@
+php-apache:
+  container_name: ndock_php-apache
+  build: ./services/php-apache
+  command:
+    bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;
+    php-fpm'
+  environment:
+    TZ: Asia/Tokyo
+  image: php:20201127
+  logging:
+    driver: json-file
+    options:
+      max-file: "3"
+      max-size: 10m
+  networks:
+    - network
+  volumes:
+    - ./services/php/php.ini.main:/usr/local/etc/php/php.ini
+    - ../volumes/www/:/var/www
+    - ../volumes/logs/php-fpm:/var/log/php-fpm

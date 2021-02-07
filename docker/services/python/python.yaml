@@ -1,0 +1,13 @@
+python:
+  container_name: ndock_python
+  image: python:3
+  build: services/python
+  entrypoint: /entrypoint.sh
+  networks:
+    - network
+  ports:
+    - 8000:8000
+  working_dir: /code
+  volumes:
+    - ../volumes/home/django:/code:rw
+    - ./services/python/entrypoint.sh:/entrypoint.sh

@@ -6,5 +6,4 @@ use ndock_lib::NDock;
 fn main() {
     let ndock = NDock::new();
     ndock.run();
-    ndock.drop()
 }

@@ -16,6 +16,7 @@ impl Commands {
             .short("c")
             .long("command")
             .takes_value(true)
+            .default_value("start")
     }
 
     pub fn uri() -> Arg<'static, 'static> {

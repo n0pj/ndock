@@ -1,7 +1,8 @@
 pub struct NDock {
-  start_time: String,
-  end_time: String,
+    start_time: String,
+    end_time: String,
 }
+use super::docker::Docker;
 use super::ArgParser;
 use super::Time;
 use super::YamlParser;
@@ -9,69 +10,58 @@ use colored::*;
 use serde_yaml::{self, Value};
 use std::thread::sleep;
 use std::time;
+
 impl NDock {
-  const START_TIME: String = String::new();
+    const START_TIME: String = String::new();
 
-  pub fn new() -> Self {
-    let start_time = String::new();
-    let end_time = String::new();
-    println!(
-      "[{}] Starting ndock ... ",
-      Time::to_string(Time::now(None)).blue()
-    );
-    Self {
-      start_time,
-      end_time,
+    pub fn new() -> Self {
+        let start_time = String::new();
+        let end_time = String::new();
+        println!(
+            "[{}] Start ndock ... ",
+            Time::to_string(Time::now(None)).blue()
+        );
+        Self {
+            start_time,
+            end_time,
+        }
     }
-  }
 
-  pub fn run(&self) {
-    let settings = YamlParser::import_with_load("settings.yaml");
+    pub fn run(&self) {
+        let settings = YamlParser::import_with_load("settings.yaml");
 
-    YamlParser::save(&settings.unwrap(), "test2.yaml");
-    // let docker_settings;
+        YamlParser::save(&settings.unwrap(), "test2.yaml");
 
-    // if let Ok(settings) = &settings {
-    //   docker_settings = &settings["docker_settings"];
-    // } else {
-    //   println!("Can not load ... {}", "'settings.yaml'".red());
-    //   panic!()
-    // }
+        let app = ArgParser::new();
+        let matches = app.get_matches();
+        // let command = matches.value_of("command");
+        let command = matches.value_of("command");
+        let command = command.unwrap().to_string();
+        let env = matches.value_of("env");
+        let env = match env {
+            Some(env) => Docker::new(env),
+            None => {
+                panic!()
+            }
+        };
 
-    // if let Some(docker_settings) = docker_settings.as_mapping() {
-    //   for v in docker_settings {
-    //     println!("{:?}", v);
-    //     let image_name = v.0;
+        let mut env = if let Some(env) = env { env } else { panic!() };
 
-    //     // let image_name = String::from(v.0);
+        env.command(&command);
+        env.run();
 
-    //     let test = &YamlParser::to_yvstring("nginx");
-    //     if image_name == test {
-    //       println!("yes!!! {:?}", test)
-    //     }
-    //   }
-    // }
-  }
-
-  pub fn arg_parse() {
-    let app = ArgParser::new();
-
-    let matches = app.get_matches();
-
-    if let Some(o) = matches.value_of("pa") {
-      println!("{}", o)
+        self.drop()
     }
-  }
 
-  pub fn drop(&self) -> () {
-    println!(
-      "[{}] Exit ndock ... {}",
-      Time::to_string(Time::now(None)).blue(),
-      "done".green()
-    );
-  }
+    pub fn drop(&self) -> () {
+        println!(
+            "[{}] Start ndock ... {}",
+            Time::to_string(Time::now(None)).blue(),
+            "done".green()
+        );
+    }
 }
 
 pub mod ndock {
-  impl super::NDock {}
+    impl super::NDock {}
 }

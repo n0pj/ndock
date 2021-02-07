@@ -1,3 +1,4 @@
+.ncache/*
 volumes/mysql/pool
 volumes/logs/laravel
 volumes/logs/nginx
@@ -5,9 +6,7 @@ volumes/logs/php-fpm
 volumes/home/*
 volumes/mysql/pool/*
 volumes/www/*
-docker/main.yaml
 target/
 
-.mypy_cache
-__pycache__
+automated_*.yaml
 !.gitkeep
