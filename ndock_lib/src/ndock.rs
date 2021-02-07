@@ -4,6 +4,7 @@ pub struct NDock {
 }
 use super::docker::Docker;
 use super::ArgParser;
+use super::EnvParser;
 use super::Time;
 use super::YamlParser;
 use colored::*;
@@ -28,9 +29,8 @@ impl NDock {
     }
 
     pub fn run(&self) {
-        let settings = YamlParser::import_with_load("settings.yaml");
-
-        YamlParser::save(&settings.unwrap(), "test2.yaml");
+        let env_parser = EnvParser::new();
+        env_parser.analyse_user_id();
 
         let app = ArgParser::new();
         let matches = app.get_matches();
@@ -55,9 +55,8 @@ impl NDock {
 
     pub fn drop(&self) -> () {
         println!(
-            "[{}] Start ndock ... {}",
+            "[{}] Exit ndock ...",
             Time::to_string(Time::now(None)).blue(),
-            "done".green()
         );
     }
 }

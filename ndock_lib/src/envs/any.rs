@@ -12,6 +12,7 @@ pub struct Any {
 pub enum AllowCommand {
     Start,
     Stop,
+    Up,
     Down,
     Build,
     Shell,
@@ -22,12 +23,6 @@ impl Env for Any {
 
     fn command(&mut self, command: &str) {
         match command {
-            "start" => {
-                self.command = Some(AllowCommand::Start);
-            }
-            "stop" => {
-                self.command = Some(AllowCommand::Stop);
-            }
             _ => {
                 println!("Not allowed command: {}", command.red());
                 panic!()

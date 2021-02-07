@@ -6,7 +6,7 @@ pub struct ArgParser {}
 
 impl ArgParser {
     pub fn new() -> App<'static, 'static> {
-        println!("{}", "ArgParser loaded ... ".green());
+        // println!("{}", "ArgParser loaded ... ".green());
 
         App::new(crate_name!())
             .version(crate_version!())

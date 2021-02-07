@@ -15,6 +15,7 @@ pub trait Env {
   fn test(&self) {}
   fn start(&self) {}
   fn stop(&self) {}
+  fn up(&self) {}
   fn down(&self) {}
   fn build(&self) {}
   fn shell(&self) {}

@@ -15,6 +15,7 @@ pub struct Master {
 pub enum AllowCommand {
     Start,
     Stop,
+    Up,
     Down,
     Build,
     Shell,
@@ -30,6 +31,9 @@ impl Env for Master {
             }
             "stop" => {
                 self.command = Some(AllowCommand::Stop);
+            }
+            "up" => {
+                self.command = Some(AllowCommand::Up);
             }
             "down" => {
                 self.command = Some(AllowCommand::Down);
@@ -52,6 +56,7 @@ impl Env for Master {
         match command {
             Some(AllowCommand::Start) => self.start(),
             Some(AllowCommand::Stop) => self.stop(),
+            Some(AllowCommand::Up) => self.up(),
             Some(AllowCommand::Down) => self.down(),
             Some(AllowCommand::Build) => self.build(),
             Some(AllowCommand::Shell) => self.shell(),
@@ -60,6 +65,31 @@ impl Env for Master {
                 panic!()
             }
         }
+    }
+
+    fn up(&self) {
+        match Command::new("docker-compose").arg("-v").status() {
+            Ok(_) => {}
+            Err(_) => {
+                println!(
+                    "{}",
+                    "Unknown error, realy installed docker-compose?".yellow()
+                );
+                panic!()
+            }
+        }
+
+        let load_file = &self.load_file;
+        let file_path = format!("docker/{}.yaml", &self.env);
+        let settings = YamlParser::import_with_load(&file_path);
+        YamlParser::save(&settings.unwrap(), &load_file);
+        Command::new("docker-compose")
+            .arg("-f")
+            .arg(&load_file)
+            .arg("up")
+            .arg("-d")
+            .status()
+            .expect("error");
     }
 
     fn start(&self) {
@@ -81,8 +111,7 @@ impl Env for Master {
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
-            .arg("up")
-            .arg("-d")
+            .arg("start")
             .status()
             .expect("error");
     }
