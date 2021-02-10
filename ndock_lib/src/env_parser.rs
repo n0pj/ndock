@@ -72,7 +72,7 @@ impl EnvParser {
     let user_id = String::from_utf8(user_id.stdout).unwrap();
     println!(
       "[{}] Current USER_ID ... {}",
-      Time::to_string(Time::now(None)).blue(),
+      Time::to_string(Time::now(None)).cyan(),
       user_id.green()
     );
     let mut new_dotenv_str = String::new();

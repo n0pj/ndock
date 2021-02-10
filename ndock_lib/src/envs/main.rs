@@ -22,9 +22,13 @@ pub enum AllowCommand {
 }
 
 impl Env for Main {
-    fn env(&self) {}
-
     fn command(&mut self, command: &str) {
+        println!(
+            "[{}] Current command is ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            &command.green()
+        );
+
         match command {
             "start" => {
                 self.command = Some(AllowCommand::Start);
@@ -45,7 +49,12 @@ impl Env for Main {
                 self.command = Some(AllowCommand::Shell);
             }
             _ => {
-                println!("Not allowed command: {}", command.red());
+                println!("Not allowed the command ... {}", command.red());
+                println!(
+                    "{} ... {}",
+                    "These commands only".red(),
+                    "start, stop, up, down, build, shell".green()
+                );
                 panic!()
             }
         }
@@ -168,6 +177,8 @@ impl Env for Main {
             .arg("down")
             .arg("--rmi")
             .arg("all")
+            .arg("--volumes")
+            .arg("--remove-orphans")
             .status()
             .expect("error");
         println!(

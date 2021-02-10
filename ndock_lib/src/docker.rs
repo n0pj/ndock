@@ -5,6 +5,7 @@ use super::envs::Env;
 use super::envs::Main;
 use super::envs::Master;
 use super::envs::Staging;
+use super::Time;
 use colored::*;
 
 #[derive(Debug)]
@@ -19,6 +20,12 @@ pub struct Docker {}
 
 impl Docker {
     pub fn new(env: &str) -> Option<Box<dyn Env + 'static>> {
+        println!(
+            "[{}] Current env is ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            &env.green()
+        );
+
         match env {
             "any" => Some(Box::new(Any {
                 env: "any".to_string(),
@@ -44,7 +51,15 @@ impl Docker {
                 load_file: "docker/automated_staging.yaml".to_string(),
                 shell_file: "docker/cs_main.sh".to_string(),
             })),
-            _ => None,
+            _ => {
+                println!("{} ... {}", "Not allowed the env".red(), &env.red());
+                println!(
+                    "{} ... {}",
+                    "These envs only".red(),
+                    "any, main, master, staging".green()
+                );
+                panic!()
+            }
         }
     }
 }

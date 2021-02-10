@@ -17,6 +17,10 @@ pub trait Env {
   fn stop(&self) {}
   fn up(&self) {}
   fn down(&self) {}
+  fn rm(&self) {}
+  fn rmi(&self) {}
+  fn force_rm(&self) {}
+  fn force_rmi(&self) {}
   fn build(&self) {}
   fn shell(&self) {}
 }

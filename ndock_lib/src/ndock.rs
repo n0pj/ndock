@@ -9,6 +9,7 @@ use super::Time;
 use super::YamlParser;
 use colored::*;
 use serde_yaml::{self, Value};
+use std::env;
 use std::thread::sleep;
 use std::time;
 
@@ -19,9 +20,11 @@ impl NDock {
         let start_time = String::new();
         let end_time = String::new();
         println!(
-            "[{}] Start ndock ... ",
-            Time::to_string(Time::now(None)).blue()
+            "[{}] Start {} ... ",
+            Time::to_string(Time::now(None)).cyan(),
+            "ndock".cyan()
         );
+
         Self {
             start_time,
             end_time,
@@ -35,19 +38,50 @@ impl NDock {
         let app = ArgParser::new();
         let matches = app.get_matches();
         // let command = matches.value_of("command");
+
         let command = matches.value_of("command");
-        let command = command.unwrap().to_string();
+        let command = match command {
+            Some(command) => command.to_string(),
+            // command が指定されていない
+            None => {
+                // .env から取得
+                let command = env::var("DEFAULT_COMMAND");
+                match command {
+                    Ok(command) => command.to_string(),
+                    Err(_) => {
+                        println!("{}", "Could not read the .env".red());
+                        println!("{}", "Please copy from .env.example".red());
+                        panic!()
+                    }
+                }
+            }
+        };
+
         let env = matches.value_of("env");
         let env = match env {
+            // env が指定
             Some(env) => Docker::new(env),
+            // env が指定されていない
             None => {
-                panic!()
+                // .env から取得
+                let default_env = env::var("DEFAULT_ENV");
+                let default_env = match default_env {
+                    Ok(default_env) => default_env,
+                    Err(_) => {
+                        println!("{}", "Could not read the .env".red());
+                        println!("{}", "Please copy from .env.example".red());
+                        panic!()
+                    }
+                };
+                Docker::new(&default_env)
             }
         };
 
         let mut env = if let Some(env) = env { env } else { panic!() };
 
         env.command(&command);
+
+        // ndock 処理開始
         env.run();
 
         self.drop()
@@ -55,8 +89,9 @@ impl NDock {
 
     pub fn drop(&self) -> () {
         println!(
-            "[{}] Exit ndock ...",
-            Time::to_string(Time::now(None)).blue(),
+            "[{}] Exit {} ...",
+            Time::to_string(Time::now(None)).cyan(),
+            "ndock".cyan()
         );
     }
 }
