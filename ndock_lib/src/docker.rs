@@ -31,25 +31,25 @@ impl Docker {
                 env: "any".to_string(),
                 command: None,
                 load_file: "".to_string(),
-                shell_file: "docker/cs_main.sh".to_string(),
+                shell_file: "".to_string(),
             })),
             "main" => Some(Box::new(Main {
                 env: "main".to_string(),
                 command: None,
-                load_file: "docker/automated_main.yaml".to_string(),
-                shell_file: "docker/cs_main.sh".to_string(),
+                load_file: "docker_settings/automated_main.yaml".to_string(),
+                shell_file: "docker_settings/cs_main.sh".to_string(),
             })),
             "master" => Some(Box::new(Master {
                 env: "master".to_string(),
                 command: None,
-                load_file: "docker/automated_master.yaml".to_string(),
-                shell_file: "docker/cs_main.sh".to_string(),
+                load_file: "docker_settings/automated_master.yaml".to_string(),
+                shell_file: "docker_settings/cs_master.sh".to_string(),
             })),
             "staging" => Some(Box::new(Staging {
                 env: "staging".to_string(),
                 command: None,
-                load_file: "docker/automated_staging.yaml".to_string(),
-                shell_file: "docker/cs_main.sh".to_string(),
+                load_file: "docker_settings/automated_staging.yaml".to_string(),
+                shell_file: "docker_settings/cs_staging.sh".to_string(),
             })),
             _ => {
                 println!("{} ... {}", "Not allowed the env".red(), &env.red());

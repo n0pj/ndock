@@ -1,0 +1,8 @@
+networks:
+  network:
+    driver: bridge
+services:
+  # mysql
+  import: docker_settings/services/mysql/mysql.yaml
+  import: docker_settings/services/nginx/nginx.yaml
+  import: docker_settings/services/php-fpm/php-fpm.yaml

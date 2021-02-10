@@ -89,7 +89,7 @@ impl Env for Master {
         }
 
         let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -114,7 +114,7 @@ impl Env for Master {
         }
 
         let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -138,7 +138,7 @@ impl Env for Master {
         }
 
         let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -168,7 +168,7 @@ impl Env for Master {
         }
 
         let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -202,7 +202,7 @@ impl Env for Master {
         }
 
         let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -214,7 +214,7 @@ impl Env for Master {
     }
 
     fn shell(&self) {
-        let shell_file = format!("docker/cs_{}.sh", &self.env);
+        let shell_file = format!("docker_settings/cs_{}.sh", &self.env);
         Command::new("sh").arg(&shell_file).status().expect("error");
         println!(
             "[{}] Run Shell {} ... {}",
