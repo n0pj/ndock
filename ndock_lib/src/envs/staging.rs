@@ -93,6 +93,8 @@ impl Env for Staging {
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -119,6 +121,8 @@ impl Env for Staging {
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -144,6 +148,8 @@ impl Env for Staging {
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -175,6 +181,8 @@ impl Env for Staging {
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -210,6 +218,8 @@ impl Env for Staging {
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
