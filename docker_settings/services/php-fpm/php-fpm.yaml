@@ -2,7 +2,7 @@ php-fpm:
   container_name: php-fpm
   image: php:20201203
   build: ./services/php-fpm
-  command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data; php-fpm'
+  command: bash -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data; php-fpm'
   environment:
     TZ: Asia/Tokyo
   logging:

@@ -11,13 +11,13 @@ usermod -g tmpgrp node
 groupdel node
 
 # ホストユーザのGIDと同じGIDでnode グループを作成
-groupadd -g $UID node
+groupadd -g $USER_ID node
 
 # nodeユーザのGID をホストユーザのGIDに設定
-usermod -g $UID node
+usermod -g $USER_ID node
 
-# nodeユーザのUID をホストユーザのUIDに設定
-# usermod -g $LOCALUID node
+# nodeユーザのUSER_ID をホストユーザのUSER_IDに設定
+# usermod -g $LOCALUSER_ID node
 
 # 一時的に作ったグループを削除
 groupdel tmpgrp

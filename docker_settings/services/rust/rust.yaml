@@ -4,15 +4,15 @@ rust:
   build:
     context: ./services/rust
     args:
-      - UID=$UID
+      - USER_ID=$USER_ID
   entrypoint: /entrypoint.sh
   networks:
     - network
   ports:
     - 8888:8888
   # working_dir: /code
-  # command: bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;'
-  # command: bash -c 'useradd -m -u ${UID} docker'
+  # command: bash -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data;'
+  # command: bash -c 'useradd -m -u ${USER_ID} docker'
   volumes:
     - ../volumes/home/rust:/code:rw
     - ./services/rust/entrypoint.sh:/entrypoint.sh
