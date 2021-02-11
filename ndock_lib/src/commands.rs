@@ -8,7 +8,6 @@ impl Commands {
             .short("e")
             .long("env")
             .takes_value(true)
-            .default_value("main")
     }
 
     pub fn command() -> Arg<'static, 'static> {
@@ -16,7 +15,6 @@ impl Commands {
             .short("c")
             .long("command")
             .takes_value(true)
-            .default_value("start")
     }
 
     pub fn uri() -> Arg<'static, 'static> {

@@ -34,8 +34,12 @@ impl EnvParser {
     };
 
     let user_id = Command::new("id").arg("-u").output().expect("eee");
-    let user_id = String::from_utf8(user_id.stdout).unwrap();
+    let mut user_id = String::from_utf8(user_id.stdout).unwrap();
     let mut new_dotenv_str = String::new();
+
+    let re_newline = Regex::new(r"\n").unwrap();
+
+    user_id = re_newline.replace_all(&user_id, "").to_string();
 
     let re = Regex::new(r"(?m)(USER_ID)").unwrap();
 
@@ -69,10 +73,15 @@ impl EnvParser {
     };
 
     let user_id = Command::new("id").arg("-u").output().expect("eee");
-    let user_id = String::from_utf8(user_id.stdout).unwrap();
+    let mut user_id = String::from_utf8(user_id.stdout).unwrap();
+
+    let re_newline = Regex::new(r"\n").unwrap();
+
+    user_id = re_newline.replace_all(&user_id, "").to_string();
+
     println!(
       "[{}] Current USER_ID ... {}",
-      Time::to_string(Time::now(None)).blue(),
+      Time::to_string(Time::now(None)).cyan(),
       user_id.green()
     );
     let mut new_dotenv_str = String::new();

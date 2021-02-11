@@ -1,5 +1,5 @@
 python:
-  container_name: ndock_python
+  container_name: python
   image: python:3
   build: services/python
   entrypoint: /entrypoint.sh

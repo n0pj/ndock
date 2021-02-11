@@ -1,5 +1,5 @@
 phpmyadmin:
-  container_name: ndock_phpmyadmin
+  container_name: phpmyadmin
   image: phpmyadmin/phpmyadmin
   environment:
     - PMA_ARBITRARY=1

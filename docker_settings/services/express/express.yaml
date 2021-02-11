@@ -1,5 +1,5 @@
 express:
-  container_name: ndock_express
+  container_name: express
   image: node:14.15.1
   build: ./services/express
   working_dir: /home/node/express

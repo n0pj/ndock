@@ -3,6 +3,7 @@ use crate::Time;
 use crate::YamlParser;
 use colored::*;
 use eval::eval;
+use regex::Regex;
 use std::process::Command;
 
 pub struct Main {
@@ -22,9 +23,13 @@ pub enum AllowCommand {
 }
 
 impl Env for Main {
-    fn env(&self) {}
-
     fn command(&mut self, command: &str) {
+        println!(
+            "[{}] Current command is ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            &command.green()
+        );
+
         match command {
             "start" => {
                 self.command = Some(AllowCommand::Start);
@@ -45,7 +50,12 @@ impl Env for Main {
                 self.command = Some(AllowCommand::Shell);
             }
             _ => {
-                println!("Not allowed command: {}", command.red());
+                println!("Not allowed the command ... {}", command.red());
+                println!(
+                    "{} ... {}",
+                    "These commands only".red(),
+                    "start, stop, up, down, build, shell".green()
+                );
                 panic!()
             }
         }
@@ -79,8 +89,8 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let load_file = &*self.load_file;
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -104,10 +114,13 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let load_file = &*self.load_file;
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -128,8 +141,9 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let load_file = &*self.load_file;
+
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -158,8 +172,9 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let load_file = &*self.load_file;
+
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -168,6 +183,8 @@ impl Env for Main {
             .arg("down")
             .arg("--rmi")
             .arg("all")
+            .arg("--volumes")
+            .arg("--remove-orphans")
             .status()
             .expect("error");
         println!(
@@ -190,8 +207,9 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
-        let file_path = format!("docker/{}.yaml", &self.env);
+        let load_file = &*self.load_file;
+
+        let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
         Command::new("docker-compose")
@@ -203,7 +221,7 @@ impl Env for Main {
     }
 
     fn shell(&self) {
-        let shell_file = format!("docker/cs_{}.sh", &self.env);
+        let shell_file = format!("docker_settings/cs_{}.sh", &self.env);
         Command::new("sh").arg(&shell_file).status().expect("error");
         println!(
             "[{}] Run Shell {} ... {}",

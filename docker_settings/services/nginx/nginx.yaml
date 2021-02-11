@@ -1,5 +1,5 @@
 nginx:
-  container_name: ndock_nginx
+  container_name: nginx
   # depends_on:
   #   - php-fpm
   image: nginx:1.19
