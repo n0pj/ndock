@@ -88,7 +88,8 @@ impl Env for Master {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -113,7 +114,8 @@ impl Env for Master {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -137,7 +139,8 @@ impl Env for Master {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -167,7 +170,8 @@ impl Env for Master {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -201,7 +205,8 @@ impl Env for Master {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);

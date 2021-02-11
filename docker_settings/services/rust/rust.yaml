@@ -1,5 +1,5 @@
 rust:
-  container_name: ndock_rust
+  container_name: rust
   # image: rust:1.49
   build:
     context: ./services/rust

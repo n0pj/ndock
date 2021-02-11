@@ -1,6 +1,6 @@
 mysql:
   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-  container_name: ndock_mysql
+  container_name: mysql
   environment:
     MYSQL_DATABASE: database
     MYSQL_PASSWORD: docker

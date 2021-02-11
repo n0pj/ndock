@@ -3,6 +3,7 @@ use crate::Time;
 use crate::YamlParser;
 use colored::*;
 use eval::eval;
+use regex::Regex;
 use std::process::Command;
 
 pub struct Main {
@@ -88,7 +89,7 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -113,10 +114,13 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
+
+        self.generate_container_name(&load_file);
+
         Command::new("docker-compose")
             .arg("-f")
             .arg(&load_file)
@@ -137,7 +141,8 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -167,7 +172,8 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
@@ -201,7 +207,8 @@ impl Env for Main {
             }
         }
 
-        let load_file = &self.load_file;
+        let load_file = &*self.load_file;
+
         let file_path = format!("docker_settings/{}.yaml", &self.env);
         let settings = YamlParser::import_with_load(&file_path);
         YamlParser::save(&settings.unwrap(), &load_file);
