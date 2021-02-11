@@ -158,7 +158,7 @@ impl Env for Staging {
             .expect("error");
         println!(
             "[{}] Stop ndock {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
@@ -195,7 +195,7 @@ impl Env for Staging {
             .expect("error");
         println!(
             "[{}] Down ndock {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
@@ -233,7 +233,7 @@ impl Env for Staging {
         Command::new("sh").arg(&shell_file).status().expect("error");
         println!(
             "[{}] Run Shell {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
