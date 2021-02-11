@@ -8,5 +8,6 @@ volumes/mysql/pool/*
 volumes/www/*
 target/
 
+.env
 automated_*.yaml
 !.gitkeep

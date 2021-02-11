@@ -167,14 +167,14 @@ checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
 
 [[package]]
 name = "ndock"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ndock_lib",
 ]
 
 [[package]]
 name = "ndock_lib"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "clap",
