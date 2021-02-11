@@ -2,7 +2,7 @@ php-apache:
   container_name: php-apache
   build: ./services/php-apache
   command:
-    bash -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;
+    bash -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data;
     php-fpm'
   environment:
     TZ: Asia/Tokyo

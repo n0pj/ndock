@@ -1,11 +1,11 @@
 FROM rust:1.49
-ARG UID
+ARG USER_ID
 
 # ユーザーを作成
-# ARG UID=1000
-RUN useradd -m -u ${UID} docker
+# ARG USER_ID=1000
+RUN useradd -m -u ${USER_ID} docker
 
 # 作成したユーザーに切り替える
-USER ${UID}
+USER ${USER_ID}
 
 # RUN apt-get -y update

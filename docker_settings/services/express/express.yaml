@@ -3,7 +3,7 @@ express:
   image: node:14.15.1
   build: ./services/express
   working_dir: /home/node/express
-  # - sh -c 'usermod -o -u ${UID} www-data; groupmod -o -g ${UID} www-data;'
+  # - sh -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data;'
   command:
     [sh, -c, yarn install && yarn build && yarn next:build && yarn next:start]
   # entrypoint: /entrypoint.sh
