@@ -56,11 +56,11 @@
 ```shell
 ./ndock
 ```
-最初に、以下のコマンドで image のダウンロードと container の作成を行う。
+最初は以下のコマンドで image のダウンロードと build、 container の作成と起動を行う。
 ```
 ./ndock -c up
 ```
-次に以下で container の起動を行う。
+以下で container の起動を行う。
 ```
 ./ndock -c start
 ```
