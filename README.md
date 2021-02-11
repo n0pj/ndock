@@ -6,6 +6,7 @@
 
 ```
 ├── ndock ( cli tool )
+├── .env.example // 最初に cp .env.example .env
 ├── README.md
 ├── docker_settings // docker 向けの設定ディレクトリ
 │   ├── cs_main.sh // main の ./ndock -e main -c shell で実行される custom_shell
@@ -20,24 +21,24 @@
 │       │   ├── entrypoint.sh
 │           └── express.yaml // 各 service には import 用の yaml を作成するのが好ましい
 └── volumes // www, home, log など、各種マウントするためのディレクトリ
-    ├── home
-    │   └── django
+    ├── home // django, node, rust 系のアプリを入れる
+    │   └── django
     ├── logs
     │   ├── nginx
     │   │   ├── access.log
     │   │   └── error.log
     │   └── php-fpm
     ├── mysql
-    │   ├── conf.d
-    │   │   ├── custom.cnf
+    │   ├── conf.d // mysql の conf.d にマウントする用
+    │   │   ├── custom.cnf
     │   │   └── my.cnf
-    │   ├── pool
-    │   │   ├── ca.pem
+    │   ├── pool // データベースの pool
+    │   │   ├── ca.pem
     │   │   ├── client-cert.pem
     │   │   ├── public_key.pem
     │   │   └── server-cert.pem
-    │   └── sql
-    └── www
+    │   └── sql // データベース初期実行 sql 用
+    └── www // laravel や静的・動的なサイトを設置する用
 ```
 
 ## 特徴、目玉
@@ -56,6 +57,11 @@
 ```shell
 ./ndock
 ```
+以下で .env のコピーを行う。
+```
+cp .env.example .env
+```
+
 最初は以下のコマンドで image のダウンロードと build、 container の作成と起動を行う。
 ```
 ./ndock -c up
