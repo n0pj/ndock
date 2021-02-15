@@ -152,7 +152,7 @@ impl Env for Master {
             .expect("error");
         println!(
             "[{}] Stop ndock {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
@@ -187,7 +187,7 @@ impl Env for Master {
             .expect("error");
         println!(
             "[{}] Down ndock {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
@@ -223,7 +223,7 @@ impl Env for Master {
         Command::new("sh").arg(&shell_file).status().expect("error");
         println!(
             "[{}] Run Shell {} ... {}",
-            Time::to_string(Time::now(None)).blue(),
+            Time::to_string(Time::now(None)).cyan(),
             &self.env,
             "done".green()
         );
