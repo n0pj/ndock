@@ -120,8 +120,8 @@ main と同等
 
 ## ndock の yaml import 機能
 ndock では、ndock 内で yaml が使用される場合、以下のように書いた yaml は import 処理が行われる。  
-※起点は ndock がある場所からとなる
-
+※起点は {env}.yaml がある場所からとなる
+￼
 ```yaml
 networks:
   network:
@@ -168,4 +168,5 @@ container_name: ndock_mysql
 
 ## ndock の shell 機能
 ./ndock -c shell とすることで、docker_settings/cs_{env}.sh が読み込まれるようになっている。  
-※起点は ndock がある場所からとなる
+※起点は cs_{env}.sh がある場所からとなる
+￼
