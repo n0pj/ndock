@@ -1,8 +1,10 @@
 php-fpm:
   container_name: php-fpm
-  image: php:20201203
-  build: ./services/php-fpm
-  command: bash -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data; php-fpm'
+  image: php:20210215
+  build:
+    context: ./services/php-fpm
+    args:
+      - USER_ID=${USER_ID}
   environment:
     TZ: Asia/Tokyo
   logging:
@@ -10,9 +12,11 @@ php-fpm:
     options:
       max-file: "3"
       max-size: 10m
+  working_dir: /var/www
   networks:
     - network
   volumes:
     - ./services/php-fpm/php.ini.main:/usr/local/etc/php/php.ini
+    - ./services/php-fpm/setup.main.sh:/setup.sh
     - ../volumes/www:/var/www
     - ../volumes/logs/php-fpm:/var/log/php-fpm
