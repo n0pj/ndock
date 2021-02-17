@@ -49,7 +49,7 @@ impl Env for Any {
                 println!(
                     "{} ... {}",
                     "These commands only".red(),
-                    "stop, force-rm, force-rmi".green()
+                    "stop, rm, rmi".green()
                 );
                 panic!()
             }
