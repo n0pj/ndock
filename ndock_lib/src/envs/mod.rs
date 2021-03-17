@@ -34,10 +34,10 @@ pub trait Env {
 
     fn change_directory(&self, path: &str) {
         let current_directory = Path::new(&path);
-        println!(
-            "[{}] Change working directory ... ",
-            Time::to_string(Time::now(None)).cyan(),
-        );
+        // println!(
+        //     "[{}] Change working directory ... ",
+        //     Time::to_string(Time::now(None)).cyan(),
+        // );
         if env::set_current_dir(&current_directory).is_err() {
             println!("{}", "Can not change the directory.".red());
             panic!()
@@ -45,6 +45,7 @@ pub trait Env {
 
         let current_directory = Command::new("pwd").output().expect("error");
         let current_directory = String::from_utf8(current_directory.stdout).unwrap();
+        let current_directory = current_directory.replace("\n", "");
 
         println!(
             "[{}] Change working directory ... {}",

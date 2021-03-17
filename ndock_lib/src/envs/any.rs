@@ -204,20 +204,25 @@ impl Env for Any {
         //     "done".green()
         // );
 
-        println!("┌---------------------------------------┐");
-        println!("|      Please execute next command      |");
-        println!("|      {}            |", "./ndock -e main -c up".green());
-        println!("└---------------------------------------┘");
+        // println!("┌---------------------------------------┐");
+        // println!("|      Please execute next command      |");
+        // println!("|      {}            |", "./ndock -e main -c up".green());
+        // println!("└---------------------------------------┘");
+
+        println!(
+            "[{}] Setup WordPress  ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            "done".green()
+        );
 
         self.change_directory("../../");
 
         Command::new("./ndock")
-            .arg("-e")
-            .arg("main")
             .arg("-c")
             .arg("up")
             .status()
             .expect("error");
+        panic!()
     }
 }
 
