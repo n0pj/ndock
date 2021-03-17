@@ -3,6 +3,8 @@ use crate::Time;
 use colored::*;
 use eval::eval;
 use regex::Regex;
+use std::env;
+use std::path::Path;
 use std::process::Command;
 
 pub struct Any {
@@ -16,8 +18,9 @@ pub enum AllowCommand {
     Stop,
     RM,
     RMI,
+    SetupWordPress,
     // ForceRM,
-    // ForceRMI,
+    // ForceRMI
 }
 
 impl Env for Any {
@@ -37,6 +40,9 @@ impl Env for Any {
             }
             "rmi" => {
                 self.command = Some(AllowCommand::RMI);
+            }
+            "setup-wordpress" => {
+                self.command = Some(AllowCommand::SetupWordPress);
             }
             // "force-rm" => {
             //     self.command = Some(AllowCommand::ForceRM);
@@ -62,6 +68,7 @@ impl Env for Any {
             Some(AllowCommand::Stop) => self.stop(),
             Some(AllowCommand::RM) => self.rm(),
             Some(AllowCommand::RMI) => self.rmi(),
+            Some(AllowCommand::SetupWordPress) => self.setup_wordpress(),
             // Some(AllowCommand::ForceRM) => self.force_rm(),
             // Some(AllowCommand::ForceRMI) => self.force_rmi(),
             None => {
@@ -160,6 +167,55 @@ impl Env for Any {
         Command::new("docker")
             .arg("rmi")
             .args(docker_images_vec)
+            .status()
+            .expect("error");
+    }
+
+    fn setup_wordpress(&self) {
+        self.change_directory("volumes/www");
+
+        // println!(
+        //     "[{}] Downloading files ... ",
+        //     Time::to_string(Time::now(None)).cyan(),
+        // );
+        // Command::new("curl")
+        //     .arg("-O")
+        //     .arg("https://ja.wordpress.org/latest-ja.tar.gz")
+        //     .status()
+        //     .expect("error");
+        // println!(
+        //     "[{}] Downloading files ... {}",
+        //     Time::to_string(Time::now(None)).cyan(),
+        //     "done".green()
+        // );
+
+        // println!(
+        //     "[{}] Extracting files ... ",
+        //     Time::to_string(Time::now(None)).cyan(),
+        // );
+        // Command::new("tar")
+        //     .arg("-zxvf")
+        //     .arg("latest-ja.tar.gz")
+        //     .output()
+        //     .expect("error");
+        // println!(
+        //     "[{}] Extracting files ... {}",
+        //     Time::to_string(Time::now(None)).cyan(),
+        //     "done".green()
+        // );
+
+        println!("┌---------------------------------------┐");
+        println!("|      Please execute next command      |");
+        println!("|      {}            |", "./ndock -e main -c up".green());
+        println!("└---------------------------------------┘");
+
+        self.change_directory("../../");
+
+        Command::new("./ndock")
+            .arg("-e")
+            .arg("main")
+            .arg("-c")
+            .arg("up")
             .status()
             .expect("error");
     }

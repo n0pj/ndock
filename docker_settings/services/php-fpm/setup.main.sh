@@ -9,8 +9,8 @@ chown -R www:www-data storage/
 chmod -R 774 storage/
 
 # migration
-su -c "composer install" www
-su -c "php artisan migrate:fresh" www
-su -c "php artisan db:seed" www
-su -c "php artisan storage:link" www
+# su -c "composer install" www
+# su -c "php artisan migrate:fresh" www
+# su -c "php artisan db:seed" www
+# su -c "php artisan storage:link" www
 # su -c "yarn" www

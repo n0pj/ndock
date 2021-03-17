@@ -1,0 +1,18 @@
+nginx:
+  container_name: nginx
+  # depends_on:
+  #   - php-fpm
+  image: nginx:1.19
+  logging:
+    driver: json-file
+    options:
+      max-file: "3"
+      max-size: 10m
+  networks:
+    - network
+  ports:
+    - 80:80
+  volumes:
+    - ../volumes/www:/var/www
+    - ../volumes/logs/nginx:/var/log/nginx
+    - ./services/nginx/main.conf:/etc/nginx/conf.d/default.conf

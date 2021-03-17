@@ -1,0 +1,22 @@
+php-fpm:
+  container_name: php-fpm
+  image: php:20210215
+  build:
+    context: ./services/php-fpm
+    args:
+      - USER_ID=${USER_ID}
+  environment:
+    TZ: Asia/Tokyo
+  logging:
+    driver: json-file
+    options:
+      max-file: "3"
+      max-size: 10m
+  working_dir: /var/www
+  networks:
+    - network
+  volumes:
+    - ./services/php-fpm/php.ini.main:/usr/local/etc/php/php.ini
+    - ./services/php-fpm/setup.main.sh:/setup.sh
+    - ../volumes/www:/var/www
+    - ../volumes/logs/php-fpm:/var/log/php-fpm
