@@ -7,3 +7,4 @@ services:
   import: docker_settings/services/mysql/mysql.yaml
   import: docker_settings/services/nginx/nginx.yaml
   import: docker_settings/services/php-fpm/php-fpm.yaml
+  import: docker_settings/services/phpmyadmin/phpmyadmin.yaml
