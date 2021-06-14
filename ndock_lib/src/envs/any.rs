@@ -223,6 +223,8 @@ impl Env for Any {
 
         let nginx_copy_result = vec!["volumes/setup_files/wordpress/nginx"];
         let php_fpm_copy_result = vec!["volumes/setup_files/wordpress/php-fpm"];
+        let wordpress_copy_result = vec!["volumes/setup_files/wordpress/wordpress"];
+
         let mut dir_options = CopyOptions::new();
         dir_options.overwrite = true;
 
@@ -230,6 +232,7 @@ impl Env for Any {
             "[{}] Copy files ... ",
             Time::to_string(Time::now(None)).cyan(),
         );
+
         copy_items(&nginx_copy_result, "docker_settings/services", &dir_options)
             .expect("nginx files copy error");
         copy_items(
@@ -238,6 +241,8 @@ impl Env for Any {
             &dir_options,
         )
         .expect("php-fpm files copy error");
+        copy_items(&wordpress_copy_result, "volumes/www", &dir_options)
+            .expect("wordpress files copy error");
 
         println!(
             "[{}] Copy files ... {}",
