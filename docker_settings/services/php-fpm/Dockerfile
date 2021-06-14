@@ -35,8 +35,9 @@ WORKDIR /var/www
 # 変更する場合は /usr/local/etc/php-fpm.d/www.conf でユーザー名を変える。
 # args の USER_ID を取得
 ARG USER_ID
+# shell でやっていたのを image 作成時に
 RUN useradd -u $USER_ID -s /bin/bash www && mkdir -p /home/www && chown $USER_ID:$USER_ID /home/www
 RUN adduser www www-data
-RUN chown -R www-data:www-data /var/www
+RUN chown -R www:www-data /var/www
 
 # RUN composer global require "laravel/installer"

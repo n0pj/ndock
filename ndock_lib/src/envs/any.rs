@@ -179,7 +179,7 @@ impl Env for Any {
         self.change_directory("volumes/www");
 
         println!(
-            "[{}] Downloading files ... ",
+            "[{}] Download files ... ",
             Time::to_string(Time::now(None)).cyan(),
         );
         Command::new("curl")
@@ -188,13 +188,13 @@ impl Env for Any {
             .status()
             .expect("error");
         println!(
-            "[{}] Downloading files ... {}",
+            "[{}] Download files ... {}",
             Time::to_string(Time::now(None)).cyan(),
             "done".green()
         );
 
         println!(
-            "[{}] Extracting files ... ",
+            "[{}] Extract files ... ",
             Time::to_string(Time::now(None)).cyan(),
         );
         Command::new("tar")
@@ -203,7 +203,7 @@ impl Env for Any {
             .output()
             .expect("error");
         println!(
-            "[{}] Extracting files ... {}",
+            "[{}] Extract files ... {}",
             Time::to_string(Time::now(None)).cyan(),
             "done".green()
         );
@@ -222,6 +222,7 @@ impl Env for Any {
         self.change_directory("../../");
 
         let nginx_copy_result = vec!["volumes/setup_files/wordpress/nginx"];
+        let php_fpm_copy_result = vec!["volumes/setup_files/wordpress/php-fpm"];
         let mut dir_options = CopyOptions::new();
         dir_options.overwrite = true;
 
@@ -230,7 +231,14 @@ impl Env for Any {
             Time::to_string(Time::now(None)).cyan(),
         );
         copy_items(&nginx_copy_result, "docker_settings/services", &dir_options)
-            .expect("file copy error");
+            .expect("nginx files copy error");
+        copy_items(
+            &php_fpm_copy_result,
+            "docker_settings/services",
+            &dir_options,
+        )
+        .expect("php-fpm files copy error");
+
         println!(
             "[{}] Copy files ... {}",
             Time::to_string(Time::now(None)).cyan(),
