@@ -2,8 +2,8 @@ use crate::envs::Env;
 use crate::Time;
 use crate::YamlParser;
 use colored::*;
-use eval::eval;
-use regex::Regex;
+// use eval::eval;
+// use regex::Regex;
 use std::process::Command;
 
 pub struct Main {

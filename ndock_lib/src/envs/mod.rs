@@ -17,7 +17,7 @@ use std::process::Command;
 
 pub trait Env {
     fn env(&self) {}
-    fn command(&mut self, command: &str) {}
+    fn command(&mut self, _command: &str) {}
     fn run(&self) {}
     fn test(&self) {}
     fn start(&self) {}

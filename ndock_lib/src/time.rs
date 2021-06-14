@@ -1,5 +1,5 @@
 use chrono::format::{DelayedFormat, StrftimeItems};
-use chrono::{Local, Utc};
+use chrono::Local;
 
 pub struct Time {}
 

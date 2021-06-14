@@ -1,24 +1,24 @@
 pub struct NDock {
-    start_time: String,
-    end_time: String,
+    // start_time: String,
+// end_time: String,
 }
 use super::docker::Docker;
 use super::ArgParser;
 use super::EnvParser;
 use super::Time;
-use super::YamlParser;
+// use super::YamlParser;
 use colored::*;
-use serde_yaml::{self, Value};
+// use serde_yaml::{self, Value};
 use std::env;
-use std::thread::sleep;
-use std::time;
+// use std::thread::sleep;
+// use std::time;
 
 impl NDock {
-    const START_TIME: String = String::new();
+    // const START_TIME: String = String::new();
 
     pub fn new() -> Self {
-        let start_time = String::new();
-        let end_time = String::new();
+        let _start_time = String::new();
+        let _end_time = String::new();
         println!(
             "[{}] Start {} ... ",
             Time::to_string(Time::now(None)).cyan(),
@@ -26,8 +26,8 @@ impl NDock {
         );
 
         Self {
-            start_time,
-            end_time,
+            // start_time,
+            // end_time,
         }
     }
 

@@ -3,9 +3,10 @@ extern crate clap;
 extern crate chrono;
 extern crate colored;
 extern crate dotenv;
-#[macro_use]
+// #[macro_use]
 extern crate dotenv_codegen;
 extern crate eval;
+extern crate fs_extra;
 extern crate serde;
 extern crate serde_yaml;
 

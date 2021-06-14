@@ -1,12 +1,12 @@
 use crate::Time;
 use colored::*;
-use colored::*;
+// use colored::*;
 use dotenv::dotenv;
 use regex::Regex;
-use std::env;
+// use std::env;
 use std::fs;
 use std::fs::{File, OpenOptions};
-use std::io::{self, Read, Write};
+use std::io::Write;
 use std::process::Command;
 
 pub struct EnvParser {}

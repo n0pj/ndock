@@ -1,10 +1,14 @@
 use crate::envs::Env;
 use crate::Time;
 use colored::*;
-use eval::eval;
-use regex::Regex;
-use std::env;
-use std::path::Path;
+// use eval::eval;
+// use regex::Regex;
+// use std::env;
+// use std::fs::copy;
+// use fs_extra::dir::copy;
+use fs_extra::copy_items;
+use fs_extra::dir::CopyOptions;
+// use std::path::Path;
 use std::process::Command;
 
 pub struct Any {
@@ -16,8 +20,8 @@ pub struct Any {
 
 pub enum AllowCommand {
     Stop,
-    RM,
-    RMI,
+    Rm,
+    Rmi,
     SetupWordPress,
     // ForceRM,
     // ForceRMI
@@ -36,10 +40,10 @@ impl Env for Any {
                 self.command = Some(AllowCommand::Stop);
             }
             "rm" => {
-                self.command = Some(AllowCommand::RM);
+                self.command = Some(AllowCommand::Rm);
             }
             "rmi" => {
-                self.command = Some(AllowCommand::RMI);
+                self.command = Some(AllowCommand::Rmi);
             }
             "setup-wordpress" => {
                 self.command = Some(AllowCommand::SetupWordPress);
@@ -55,7 +59,7 @@ impl Env for Any {
                 println!(
                     "{} ... {}",
                     "These commands only".red(),
-                    "stop, rm, rmi".green()
+                    "stop, rm, rmi, setup-wordpress".green()
                 );
                 panic!()
             }
@@ -66,8 +70,8 @@ impl Env for Any {
         let command = &self.command;
         match command {
             Some(AllowCommand::Stop) => self.stop(),
-            Some(AllowCommand::RM) => self.rm(),
-            Some(AllowCommand::RMI) => self.rmi(),
+            Some(AllowCommand::Rm) => self.rm(),
+            Some(AllowCommand::Rmi) => self.rmi(),
             Some(AllowCommand::SetupWordPress) => self.setup_wordpress(),
             // Some(AllowCommand::ForceRM) => self.force_rm(),
             // Some(AllowCommand::ForceRMI) => self.force_rmi(),
@@ -174,40 +178,40 @@ impl Env for Any {
     fn setup_wordpress(&self) {
         self.change_directory("volumes/www");
 
-        // println!(
-        //     "[{}] Downloading files ... ",
-        //     Time::to_string(Time::now(None)).cyan(),
-        // );
-        // Command::new("curl")
-        //     .arg("-O")
-        //     .arg("https://ja.wordpress.org/latest-ja.tar.gz")
-        //     .status()
-        //     .expect("error");
-        // println!(
-        //     "[{}] Downloading files ... {}",
-        //     Time::to_string(Time::now(None)).cyan(),
-        //     "done".green()
-        // );
+        println!(
+            "[{}] Downloading files ... ",
+            Time::to_string(Time::now(None)).cyan(),
+        );
+        Command::new("curl")
+            .arg("-O")
+            .arg("https://ja.wordpress.org/latest-ja.tar.gz")
+            .status()
+            .expect("error");
+        println!(
+            "[{}] Downloading files ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            "done".green()
+        );
 
-        // println!(
-        //     "[{}] Extracting files ... ",
-        //     Time::to_string(Time::now(None)).cyan(),
-        // );
-        // Command::new("tar")
-        //     .arg("-zxvf")
-        //     .arg("latest-ja.tar.gz")
-        //     .output()
-        //     .expect("error");
-        // println!(
-        //     "[{}] Extracting files ... {}",
-        //     Time::to_string(Time::now(None)).cyan(),
-        //     "done".green()
-        // );
+        println!(
+            "[{}] Extracting files ... ",
+            Time::to_string(Time::now(None)).cyan(),
+        );
+        Command::new("tar")
+            .arg("-zxvf")
+            .arg("latest-ja.tar.gz")
+            .output()
+            .expect("error");
+        println!(
+            "[{}] Extracting files ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            "done".green()
+        );
 
-        // println!("┌---------------------------------------┐");
-        // println!("|      Please execute next command      |");
-        // println!("|      {}            |", "./ndock -e main -c up".green());
-        // println!("└---------------------------------------┘");
+        println!("┌---------------------------------------┐");
+        println!("|      Please execute next command      |");
+        println!("|      {}            |", "./ndock -e main -c up".green());
+        println!("└---------------------------------------┘");
 
         println!(
             "[{}] Setup WordPress  ... {}",
@@ -217,12 +221,26 @@ impl Env for Any {
 
         self.change_directory("../../");
 
-        Command::new("./ndock")
-            .arg("-c")
-            .arg("up")
-            .status()
-            .expect("error");
-        panic!()
+        let nginx_copy_result = vec!["volumes/setup_files/wordpress/nginx"];
+        let mut dir_options = CopyOptions::new();
+        dir_options.overwrite = true;
+
+        println!(
+            "[{}] Copy files ... ",
+            Time::to_string(Time::now(None)).cyan(),
+        );
+        copy_items(&nginx_copy_result, "docker_settings/services", &dir_options)
+            .expect("file copy error");
+        println!(
+            "[{}] Copy files ... {}",
+            Time::to_string(Time::now(None)).cyan(),
+            "done".green()
+        );
+        // Command::new("./ndock")
+        //     .arg("-c")
+        //     .arg("up")
+        //     .status()
+        //     .expect("error");
     }
 }
 
