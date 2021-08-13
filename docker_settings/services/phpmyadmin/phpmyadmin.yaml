@@ -4,8 +4,8 @@ phpmyadmin:
   environment:
     - PMA_ARBITRARY=1
     - PMA_HOST=mysql
-    - PMA_USER=docker
-    - PMA_PASSWORD=docker
+    - PMA_USER=root
+    - PMA_PASSWORD=root
   ports:
     - 8080:80
   volumes:

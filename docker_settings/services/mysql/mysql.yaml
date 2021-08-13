@@ -4,8 +4,8 @@ mysql:
   environment:
     MYSQL_DATABASE: database
     MYSQL_PASSWORD: docker
-    MYSQL_ROOT_PASSWORD: root
     MYSQL_USER: docker
+    MYSQL_ROOT_PASSWORD: root
     TZ: Asia/Tokyo
   image: mysql:8
   # entrypoint: /entrypoint.sh
