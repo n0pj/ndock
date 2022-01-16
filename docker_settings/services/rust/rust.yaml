@@ -14,5 +14,5 @@ rust:
   # command: bash -c 'usermod -o -u ${USER_ID} www-data; groupmod -o -g ${USER_ID} www-data;'
   # command: bash -c 'useradd -m -u ${USER_ID} docker'
   volumes:
-    - ../volumes/home/rust:/code:rw
+    - ../volumes/home/hoikuen-fsoaip-rs:/code:rw
     - ./services/rust/entrypoint.sh:/entrypoint.sh
