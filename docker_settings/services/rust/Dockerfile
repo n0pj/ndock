@@ -6,6 +6,7 @@ USER ${USER_ID}:${USER_ID}
 
 # RUN apt install -y libmysqlclient-dev
 RUN cargo install cargo-watch
+RUN cargo install diesel_cli --no-default-features --features mysql
 
 # # ユーザーを作成
 # # ARG USER_ID=1000
